@@ -1,0 +1,40 @@
+
+<form class="example-form" [formGroup]='searchForm'>
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Choose a user" [matAutocomplete]="auto" formControlName='searchString'>
+  </mat-form-field>
+
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+    <mat-option *ngFor="let character of (personSearchList | async)?.results" [value]="character">
+      <span>{{ character.name }}</span>
+    </mat-option>
+  </mat-autocomplete>
+  <div class="form-group-button">
+        <button (click)="showResult()" class="btn btn-default" [disabled]="searchForm.invalid">
+          Send
+        </button>
+  </div>
+</form>
+
+<div [innerHtml]="resultString">
+
+</div>
+<div *ngIf="resultShow">
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Homeworld</th>
+      <th>Gender</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let i of resultShow">
+      <td>{{i.name}}</td>
+      <td>{{i.homeworld}}</td>
+      <td>{{i.gender}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<button (click)="getFromDB()" class="btn btn-default">Download from DB</button>
